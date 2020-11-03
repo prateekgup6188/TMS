@@ -33,6 +33,10 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+app.use(function(req,res,next){
+    res.locals.currentuser=req.user;
+    next();
+});
 
 
 // Landing Page
@@ -50,9 +54,10 @@ app.get("/main",function(req,res){
     res.render("main");
 });
 
-// handle sign up logic
+// handle Sign Up logic
 app.post("/register",function(req,res){
-    var newUser = new User({username:req.body.username});
+    var newUser = {username:req.body.username,role:req.body.role,email:req.body.email,phoneNo:req.body.phoneNo};
+    console.log(newUser);
     User.register(newUser,req.body.password,function(err,user){
         if(err){
             res.send(err);
@@ -67,6 +72,7 @@ app.post("/register",function(req,res){
 
 //Login Page
 app.get('/login',function (req,res){
+    // console.log(req);
     res.render("login");
 });
 
@@ -76,6 +82,7 @@ app.post("/login",passport.authenticate("local",
     successRedirect:"/main",
     failureRedirect:"/login"
 }),function(req,res){
+    // console.log(req.body.username);
 });
 
 // logout route
