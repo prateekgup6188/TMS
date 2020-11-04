@@ -3,6 +3,10 @@ var app = express();
 var methodOverride= require("method-override");
 var bodyParser = require("body-parser");
 var User = require('./models/user');
+var Tenant = require('./models/tenant');
+var Owner = require('./models/owner');
+var Property = require('./models/property');
+
 var { check,validationResult } = require('express-validator');
 var Validator = require('validatorjs');
 var passport       = require("passport");
@@ -80,6 +84,12 @@ app.post("/register",[
             res.render("landing");
         });
     });
+});
+
+
+// main login page
+app.get("/login",function(req,res){
+    res.render('login');
 });
 
 //Tenant Page
@@ -250,5 +260,3 @@ app.get("/logout",function(req,res){
 app.listen(3000, () => {
     console.log(`Example app listening at http://localhost:${3000}`)
   });
-
-//C:\Program Files\MongoDB\Server\4.2\bin>

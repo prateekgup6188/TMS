@@ -15,9 +15,7 @@
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <% if(!currentuser){ %>
-                            <li><a style="font-size: larger;color: rebeccapurple" href="/login/admin">Admin Login</a></li>
-                            <li><a style="font-size: larger;color: rebeccapurple;" href="/login/owner">Owner Login</a></li>
-                            <li><a style="font-size: larger;color: rebeccapurple;" href="/login/tenant">Tenant Login</a></li>
+                            <li><a style="font-size: larger;color: rebeccapurple;" href="/login">Login</a></li>
                             <li><a style="font-size: larger;color: rebeccapurple;" href="/register">Sign Up</a></li>
                         <%}else{ %>
                             <%=console.log(currentuser)%>
