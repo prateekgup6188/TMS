@@ -3,11 +3,15 @@ var app = express();
 var methodOverride= require("method-override");
 var bodyParser = require("body-parser");
 var User = require('./models/user');
+var Tenant = require('./models/tenant');
+var Owner = require('./models/owner');
+var Property = require('./models/property');
+
 var { check,validationResult } = require('express-validator');
 var Validator = require('validatorjs');
 var passport       = require("passport");
 var LocalStrategy  = require("passport-local");
-app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 app.use(methodOverride("_method"));
 var mongoose = require("mongoose");
@@ -51,11 +55,6 @@ app.get("/register",function(req,res){
     res.render('register');
 });
 
-//main page
-app.get("/main",function(req,res){
-    res.render("main");
-});
-
 // handle Sign Up logic
 app.post("/register",[
     check('username',"Invalid Username").isLength({min:3}).custom(value => {
@@ -82,19 +81,30 @@ app.post("/register",[
            return res.render("register");
         }
         passport.authenticate("local")(req,res,function(){
-            res.render("main");
+            res.render("landing");
         });
     });
 });
 
 
-//Login Page
-app.get('/login',function (req,res){
-    res.render("login");
+// main login page
+app.get("/login",function(req,res){
+    res.render('login');
 });
 
-// handling login logic
-app.post("/login",[
+//Tenant Page
+app.get('/tenant',function(req,res){
+    res.render("tenant");
+})
+
+//Tenant Login Page
+app.get('/login/tenant',function (req,res){
+    // console.log(req);
+    res.render("login_tenant");
+});
+
+// handling Tenant login logic
+app.post("/login/tenant",[
     check('username',"Invalid Username").isLength({min:3}).custom(value => {
         if (!value.match(/^[^;,+=':<>]+$/)) return false;
         return true;
@@ -105,7 +115,7 @@ app.post("/login",[
     if(!errors.isEmpty()){
         const alert = errors.array();
         console.log("error", alert);
-        return res.render("login",{alert});  
+        return res.render("login_tenant",{alert});  
     }
     else{
         console.log("Inside Else--------------");
@@ -124,22 +134,132 @@ app.post("/login",[
                     }
                   ]
             //   return res.send(401,{ success : false, message : 'authentication failed' });
-            return res.render("login",{alert})
+            return res.render("login_tenant",{alert})
             }
             req.login(user, function(err){
               if(err){
                 return next(err);
               }
-              return res.render('main');        
+              return res.render("tenant");        
             });
           })(req, res, next);
+    } 
+});
+
+
+//Owner Page
+app.get('/owner',function(req,res){
+    res.render('owner');
+})
+
+//Owner Login Page
+app.get('/login/owner',function(req,res){
+    res.render("login_owner");
+});
+
+//handling Owner login logic
+app.post("/login/owner",[
+    check('username',"Invalid Username").isLength({min:3}).custom(value => {
+        if (!value.match(/^[^;,+=':<>]+$/)) return false;
+        return true;
+    }),
+    check('password',"Invalid Password").matches(/^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/)]
+ ,function(req,res, next){
+    const errors=validationResult(req)
+    if(!errors.isEmpty()){
+        const alert = errors.array();
+        console.log("error", alert);
+        return res.render("login_owner",{alert});  
+    }
+    else{
+        console.log("Inside Else--------------");
+        passport.authenticate('local', function(err, user, info) {
+            if (err) {
+              return next(err); // will generate a 500 error
+            }
+            // Generate a JSON response reflecting authentication status
+            if (! user) {
+                const alert = [
+                    {
+                      value: req.body.username,
+                      msg: 'Invalid Username/Password',
+                      param: 'username',
+                      location: 'body'
+                    }
+                  ]
+            //   return res.send(401,{ success : false, message : 'authentication failed' });
+            return res.render("login_owner",{alert})
+            }
+            req.login(user, function(err){
+              if(err){
+                return next(err);
+              }
+              return res.render("owner");        
+            });
+        })(req, res, next);
+    } 
+});
+
+
+//Admin Login Page
+app.get("/admin",function(req,res){
+    res.render("admin");
+})
+
+//Admin Login Page
+app.get('/login/admin',function(req,res){
+    res.render("login_admin");
+});
+
+//handling Admin login logic
+app.post("/login/admin",[
+    check('username',"Invalid Username").isLength({min:3}).custom(value => {
+        if (!value.match(/^[^;,+=':<>]+$/)) return false;
+        return true;
+    }),
+    check('password',"Invalid Password").matches(/^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/)]
+ ,function(req,res, next){
+    const errors=validationResult(req)
+    if(!errors.isEmpty()){
+        const alert = errors.array();
+        console.log("error", alert);
+        return res.render("login_admin",{alert});  
+    }
+    else{
+        console.log("Inside Else--------------");
+        passport.authenticate('local', function(err, user, info) {
+            if (err) {
+              return next(err); // will generate a 500 error
+            }
+            // Generate a JSON response reflecting authentication status
+            if (! user) {
+                const alert = [
+                    {
+                      value: req.body.username,
+                      msg: 'Invalid Username/Password',
+                      param: 'username',
+                      location: 'body'
+                    }
+                  ]
+            //   return res.send(401,{ success : false, message : 'authentication failed' });
+            return res.render("login_admin",{alert})
+            }
+            req.login(user, function(err){
+              if(err){
+                return next(err);
+              }
+              return res.render("admin");        
+            });
+        })(req, res, next);
     } 
 });
 
 // logout route
 app.get("/logout",function(req,res){
     req.logOut();
-    res.redirect("/main");
+    res.redirect("/");
 });
 
-app.listen(app.get("port"));
+app.listen(3000, () => {
+    console.log(`Example app listening at http://localhost:${3000}`)
+  });
