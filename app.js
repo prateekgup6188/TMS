@@ -257,6 +257,12 @@ app.get("/logout",function(req,res){
     res.redirect("/");
 });
 
+// Property  Shower
+app.get("/property",function(req,res)
+{
+    res.render("property");
+});
+
 app.listen(3000, () => {
     console.log(`Example app listening at http://localhost:${3000}`)
   });

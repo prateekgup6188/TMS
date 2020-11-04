@@ -1,6 +1,11 @@
 <%- include("partials/header") %>
     <div class="container">
-        <div class="row text-center">
+        <div class="Jumbotron" style="margin:25px 0px 25px 0px; background-color:whitesmoke; padding: inherit;">
+            <h1>Welcome To Tenant Management System</h1><br><br>
+            <p style="font-size:20px">Following are the property currently Available for renting</p>
+            <a class="btn btn-primary btn-lg" href="#" style="margin-bottom: 25px;"> Add new Property</a>
+        </div>
+        <div class="row">
             <div class="col-md-6">
                 <div class="thumbnail">
                     <img src="https://images.unsplash.com/photo-1515263487990-61b07816b324?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60">
@@ -25,10 +30,4 @@
             </div>
         </div>
     </div>
-    <div class="container" >
-        <ul class="list-group" style="margin:20px 200px 20px 200px; font-size:20px; text-align: center;">
-            <li class="list-group-item"><span class="glyphicon glyphicon-home" style="font-size: 25px;" aria-hidden="true"></span> View Properties <a class="btn btn-primary" href="/property">Go</a></li>
-            <li class="list-group-item"><span class="glyphicon glyphicon-euro" style="font-size: 25px;" aria-hidden="true"></span> Pay Rent <a class="btn btn-primary " href="#">Go</a></li>
-        </ul>
-    </div>
-<%- include("partials/header") %>
+<%- include("partials/footer") %>
