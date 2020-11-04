@@ -108,7 +108,6 @@ app.post("/login/tenant",[
         return res.render("login_tenant",{alert});  
     }
     else{
-        console.log("Inside Else--------------");
         passport.authenticate('local', function(err, user, info) {
             if (err) {
               return next(err); // will generate a 500 error
@@ -162,7 +161,6 @@ app.post("/login/owner",[
         return res.render("login_owner",{alert});  
     }
     else{
-        console.log("Inside Else--------------");
         passport.authenticate('local', function(err, user, info) {
             if (err) {
               return next(err); // will generate a 500 error
@@ -216,7 +214,6 @@ app.post("/login/admin",[
         return res.render("login_admin",{alert});  
     }
     else{
-        console.log("Inside Else--------------");
         passport.authenticate('local', function(err, user, info) {
             if (err) {
               return next(err); // will generate a 500 error
