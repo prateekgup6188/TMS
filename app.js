@@ -141,7 +141,7 @@ app.post("/login/tenant",[
               if(err){
                 return next(err);
               }
-              return res.render("tenant");        
+              return res.redirect("/tenant");        
             });
           })(req, res, next);
     } 
@@ -150,7 +150,9 @@ app.post("/login/tenant",[
 
 //Owner Page
 app.get('/owner',function(req,res){
-    res.render('owner');
+    var currentowner=req.user;
+    console.log(currentowner);
+    res.render('owner',{currentowner:currentowner});
 })
 
 //Owner Login Page
@@ -194,7 +196,7 @@ app.post("/login/owner",[
               if(err){
                 return next(err);
               }
-              return res.render("owner");        
+              return res.redirect("/owner");        
             });
         })(req, res, next);
     } 
@@ -247,7 +249,7 @@ app.post("/login/admin",[
               if(err){
                 return next(err);
               }
-              return res.render("admin");        
+              return res.redirect("/admin");        
             });
         })(req, res, next);
     } 
