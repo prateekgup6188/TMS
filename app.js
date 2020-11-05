@@ -77,11 +77,13 @@ app.post("/register",[
     var newUser = {username:req.body.username,role:req.body.role,email:req.body.email,phoneNo:req.body.phoneNo};
     User.register(newUser,req.body.password,function(err,user){
         if(err){
+            console.log("Inside Error");
             res.send(err);
-           return res.render("register");
+           return res.redirect("/register");
         }
         passport.authenticate("local")(req,res,function(){
-            res.render("landing");
+            console.log("Inside Passport Auth");
+            res.redirect("/");
         });
     });
 });
@@ -251,6 +253,8 @@ app.post("/login/admin",[
     } 
 });
 
+const ownerRoutes = require('./routes/ownerRoute')
+app.use('/owner',ownerRoutes)
 // logout route
 app.get("/logout",function(req,res){
     req.logOut();

@@ -6,15 +6,7 @@ var OwnerSchema = new mongoose.Schema({
     password:String,
     phoneNo:Boolean,
     username:String,
-    address: String,
-    house:[
-            {
-                id:{
-                    type:mongoose.Schema.Types.ObjectId,
-                    ref :"Property"
-                }
-            }   
-        ]
+    address: String
 });
 OwnerSchema.plugin(passportLocalMongoose);
 module.exports = mongoose.model("Owner",OwnerSchema);
