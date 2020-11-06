@@ -1,5 +1,4 @@
 var mongoose = require("mongoose");
-var passportLocalMongoose = require("passport-local-mongoose");
 var TenantSchema = new mongoose.Schema({
     email:String,
     password:String,
@@ -14,5 +13,4 @@ var TenantSchema = new mongoose.Schema({
             }
     }
 });
-TenantSchema.plugin(passportLocalMongoose);
 module.exports = mongoose.model("Tenant",TenantSchema);

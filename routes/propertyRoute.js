@@ -23,4 +23,16 @@ router.put("/:id",function(req,res){
         }
     })
 });
+
+router.delete('/:id',function (req,res){
+    Property.findByIdAndRemove(req.params.id,function(err){
+        if(err){
+            req.flash("error","Can't reove this property!");
+            console.log(err);
+        }else{
+            req.flash("success","Property Successfully Removed!!");
+            res.redirect('back');
+        }
+    });
+});
 module.exports = router;

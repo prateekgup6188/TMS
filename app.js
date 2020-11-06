@@ -302,9 +302,16 @@ app.get("/admin/:id",function(req,res){
         }
         else
         {
-            res.render("admin",{admin_id:req.params.id,owners:data});
+            Tenant.find({},function(err,data1){
+                if(err){
+                    console.log(err);
+                }else{
+                     console.log("After tenant/owner Details",data,data1)
+                     res.render('admin',{admin_id:req.params.id,owners:data,tenants:data1});      
+                }
+            });
         }
-    })
+    });
 });
 
 
@@ -325,7 +332,8 @@ app.get("/property/:id",function(req,res)
 const ownerRoutes = require('./routes/ownerRoute');
 app.use('/owner',ownerRoutes);
 
-
+const adminRoutes = require('./routes/adminRoute');
+app.use('/admin',adminRoutes);
 
 const propertyRoutes = require('./routes/propertyRoute');
 app.use('/property',propertyRoutes);

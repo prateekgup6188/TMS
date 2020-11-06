@@ -4,6 +4,7 @@ var router = express.Router();
 var owner = require('../services/owner');
 var { check,validationResult } = require('express-validator');
 
+
 router.get('/addProperty/:id',[
     check('id',"id must be valid").not().isEmpty()
 ],(req, res) =>{
@@ -45,10 +46,11 @@ router.delete('/removeProperty/:id',function(req,res){
         }
         else{
             message="Property Successfully Removed";
-            res.redirect('/owner',{message});
+            res.redirect('/owner/'+req.params.id);
         }
     });
 })
+
 
 
 module.exports = router;

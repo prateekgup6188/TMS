@@ -9,6 +9,15 @@ function addProperty(req,callback){
         else{
             newProperty.username = newProperty._id;
             newProperty.author.id=req.params.id;
+            newProperty.author.username = req.user.username;
+            console.log("ID is -------> ",req.params.id);
+            Owner.findById(req.params.id, function(err,owner){
+                if(err){
+                    console.log("Owner Not found");
+                }else{
+                    console.log(owner);
+                }
+            })
             newProperty.save();
             console.log(newProperty);
             return callback(null,newProperty);

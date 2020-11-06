@@ -11,7 +11,8 @@ var PropertySchema = new mongoose.Schema({
         id:{
             type:mongoose.Schema.Types.ObjectId,
             ref :"Owner"
-        }
+        },
+        username: String
     }
 });
 module.exports = mongoose.model("Property",PropertySchema);
