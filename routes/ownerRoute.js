@@ -1,50 +1,43 @@
 var express = require('express');
 const property = require('../models/property');
 var router = express.Router();
-var Owner = require('../services/owner');
+var owner = require('../services/owner');
+var { check,validationResult } = require('express-validator');
 
-router.get('/addProperty/:id',(req, res) =>{
-    res.render("addproperty.ejs");
+router.get('/addProperty/:id',[
+    check('id',"id must be valid").not().isEmpty()
+],(req, res) =>{
+    const errors=validationResult(req)
+    if(!errors.isEmpty()){
+        return res.render("login");  
+    }
+    res.render("addProperty",{owner_id: req.params.id});
 })
 
-router.post('/addProperty/:id',(req,res) => {
-   Owner.addProperty(req, function(err,res){
-       let message;
+router.post('/addProperty/:id',[
+    check('id',"id must be valid").not().isEmpty()
+],(req,res) => {
+    const errors=validationResult(req)
+    if(!errors.isEmpty()){
+        return res.render("login");  
+    }
+    console.log('inside post add property');
+    owner.addProperty(req, function(err,result){
        if(err){
-           message="Some error occured!";
-           res.send(message);
+           req.flash("error","Some error occured!");
+           console.log(err);
        }
-       else {
-            message="Property Successfully Added";
-            res.redirect('/owner',{message});
+       else{
+            req.flash("success","Property Successfully Added!!");
+            res.redirect('/owner/'+req.params.id);
        }
 
    })
 })
 
-router.get("/property/:id/edit",function(req,res){
-    property.findById(req.params.id,function(err,prop){
-        res.render("edit",{prop:prop});
-    })
-});
-
-router.put("/property/:id",function(req,res){
-    var data=req.body.Property;
-    property.findByIdAndUpdate(req.params.id,data,function(err,prop){
-        if(err)
-        {
-            console.log(err);
-            res.redirect("/owner");
-        }
-        else
-        {
-            res.redirect("/property/"+req.params.id);
-        }
-    })
-});
 
 router.delete('/removeProperty/:id',function(req,res){
-    Owner.removeProperty(req,function(err,res){
+    owner.removeProperty(req,function(err){
         let message;
         if(err){
             message="Some error occured!";

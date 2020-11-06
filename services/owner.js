@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var Owner = require('../models/owner');
 const Property = require('../models/property');
 function addProperty(req,callback){
    Property.create(req.body.property,function(err,newProperty){
@@ -6,6 +7,9 @@ function addProperty(req,callback){
             return callback(err);
         }
         else{
+            newProperty.username = newProperty._id;
+            newProperty.author.id=req.params.id;
+            newProperty.save();
             console.log(newProperty);
             return callback(null,newProperty);
         }

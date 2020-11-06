@@ -1,10 +1,4 @@
 <%- include("partials/header") %>   
     <h1>This is Owner page</h1>
-    <a class="btn btn-primary btn-lg" href="/addProperty/<%=currentowner._id%>">Add Property</a>
-    <% if(typeof message != 'undefined'){ %>
-        <div class="alert alert-success alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <%= message %>
-        </div>
-    <% } %>
+    <a class="btn btn-primary btn-lg" href="/owner/addProperty/<%=owner_id%>">Add Property</a>
 <%- include("./partials/footer") %>

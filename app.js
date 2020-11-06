@@ -5,34 +5,47 @@ var bodyParser = require("body-parser");
 var User = require('./models/user');
 var Tenant = require('./models/tenant');
 var Owner = require('./models/owner');
+var Admin = require('./models/admin');
 var Property = require('./models/property');
-
+var flash = require('connect-flash'); 
 var { check,validationResult } = require('express-validator');
 var Validator = require('validatorjs');
 var passport       = require("passport");
 var LocalStrategy  = require("passport-local");
-app.use(bodyParser.urlencoded({extended:true}));
-app.use(bodyParser.json());
-app.use(methodOverride("_method"));
 var mongoose = require("mongoose");
+
+
 mongoose.connect("mongodb://localhost/TMS",{
 useUnifiedTopology:true,
 useNewUrlParser:true,
-useCreateIndex:true
+useCreateIndex:true,
+useFindAndModify:false
 }).then(() => console.log("DB Connected!"))
 .catch(err => {
     console.log("DB Connection Error : $(err.message)");
 });
-app.set("view engine","ejs");
-app.use(express.static("public"));
-app.set("port",process.env.PORT||8080);
 
-// passport configuration
+app.set("view engine","ejs");
+app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.json());
+app.use(express.static("public"));
+app.use(methodOverride("_method"));
 app.use(require("express-session")({
     secret:"Nature is Ultimate!",
     resave:false,
-    saveUninitialized:false
+    saveUninitialized:true,
+    cookie:{
+        httpOnly:true,
+        expires:Date.now()+1000*60*60*24*7,
+        maxAge:1000*60*60*24*7
+    }
 }));
+app.use(flash());
+
+app.set("port",process.env.PORT||8080);
+
+// passport configuration
+
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
@@ -40,7 +53,9 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.use(function(req,res,next){
-    res.locals.currentuser=req.user;
+    res.locals.currentuser = req.user;
+    res.locals.error       = req.flash('error');
+    res.locals.success     = req.flash('success');
     next();
 });
 
@@ -83,21 +98,44 @@ app.post("/register",[
         }
         passport.authenticate("local")(req,res,function(){
             console.log("Inside Passport Auth");
-            res.redirect("/");
+            var newPerson = {username:req.body.username,email:req.body.email,phoneNo:req.body.phoneNo,password:req.body.password};
+            if(req.body.role == 'Tenant'){
+                Tenant.create(newPerson,function(err,tenant){
+                    if(err){
+                        console.log(err);
+                    }else{
+                        res.redirect("/tenant/"+user._id);
+                    }
+                });
+            }
+            if(req.body.role == 'Admin'){
+                Admin.create(newPerson,function(err,admin){
+                    if(err){
+                        console.log(err);
+                    }else{
+                        res.redirect("/admin/"+user._id);
+                    }
+                });
+            }
+            if(req.body.role == 'Owner'){
+                Owner.create(newPerson,function(err,admin){
+                    if(err){
+                        console.log(err);
+                    }else{
+                        res.redirect("/owner/"+user._id);
+                    }
+                });
+            }
         });
     });
 });
 
 
-// main login page
+// Main login page
 app.get("/login",function(req,res){
     res.render('login');
 });
 
-//Tenant Page
-app.get('/tenant',function(req,res){
-    res.render("tenant");
-})
 
 //Tenant Login Page
 app.get('/login/tenant',function (req,res){
@@ -141,19 +179,17 @@ app.post("/login/tenant",[
               if(err){
                 return next(err);
               }
-              return res.redirect("/tenant");        
+              return res.redirect("/tenant/"+user._id);        
             });
           })(req, res, next);
     } 
 });
 
-
-//Owner Page
-app.get('/owner',function(req,res){
-    var currentowner=req.user;
-    console.log(currentowner);
-    res.render('owner',{currentowner:currentowner});
+//Tenant Page
+app.get('/tenant/:id',function(req,res){
+    res.render("tenant",{tenant_id:req.params.id});
 })
+
 
 //Owner Login Page
 app.get('/login/owner',function(req,res){
@@ -196,17 +232,18 @@ app.post("/login/owner",[
               if(err){
                 return next(err);
               }
-              return res.redirect("/owner");        
+              return res.redirect("/owner/"+user._id);        
             });
         })(req, res, next);
     } 
 });
 
 
-//Admin Login Page
-app.get("/admin",function(req,res){
-    res.render("admin");
+//Owner Page
+app.get('/owner/:id',function(req,res){
+    res.render('owner',{owner_id:req.params.id});
 })
+
 
 //Admin Login Page
 app.get('/login/admin',function(req,res){
@@ -249,26 +286,41 @@ app.post("/login/admin",[
               if(err){
                 return next(err);
               }
-              return res.redirect("/admin");        
+              return res.redirect("/admin/"+user._id);        
             });
         })(req, res, next);
     } 
 });
 
-const ownerRoutes = require('./routes/ownerRoute')
-app.use('/owner',ownerRoutes)
+
+//Admin Page
+app.get("/admin/:id",function(req,res){
+    res.render("admin",{admin_id:req.params.id});
+})
+
+
 // logout route
 app.get("/logout",function(req,res){
     req.logOut();
     res.redirect("/");
 });
 
-// Property  Shower
-app.get("/property",function(req,res)
+// Property Shower
+app.get("/property/:id",function(req,res)
 {
     res.render("property");
 });
 
+
+
+const ownerRoutes = require('./routes/ownerRoute');
+app.use('/owner',ownerRoutes);
+
+
+
+const propertyRoutes = require('./routes/propertyRoute');
+app.use('/property',propertyRoutes);
+
 app.listen(3000, () => {
     console.log(`Example app listening at http://localhost:${3000}`)
-  });
+});

@@ -1,10 +1,9 @@
 var mongoose = require("mongoose");
 var passportLocalMongoose = require("passport-local-mongoose");
 var TenantSchema = new mongoose.Schema({
-    name:String,
     email:String,
     password:String,
-    phoneNo:Boolean,
+    phoneNo:String,
     username:String,
     income:Number,
     members:Number,
