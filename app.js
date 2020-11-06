@@ -295,8 +295,17 @@ app.post("/login/admin",[
 
 //Admin Page
 app.get("/admin/:id",function(req,res){
-    res.render("admin",{admin_id:req.params.id});
-})
+    Owner.find({},function(err,data){
+        if(err)
+        {
+            console.log(err);
+        }
+        else
+        {
+            res.render("admin",{admin_id:req.params.id,owners:data});
+        }
+    })
+});
 
 
 // logout route
