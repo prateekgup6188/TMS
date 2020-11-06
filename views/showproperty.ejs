@@ -1,0 +1,24 @@
+<%- include("partials/header") %>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="thumbnail">
+                    <img src="<%=property.image%>" style="width:100%">
+                    <div class="caption" style="width:60%; font-size:25px;">
+                        <ul class="list-group">
+                            <li class="list-group-item">Total Number of Rooms  Present <%=property.room%></li>
+                            <li class="list-group-item">Address of the House <%=property.address%></li>
+                            <li class="list-group-item">Rent per month for the House <%=property.rent%></li>
+                            <li class="list-group-item">Owner the House <%=property.author.username%></li>
+                            <li class="list-group-item">Owner Contact Details <%=property.author.phoneno%></li>
+                            <li class="list-group-item">Owner Email ID <%=property.author.email%></li>
+                            <p>Renting Price is Non-Negotiable</p>
+                            <a class="btn btn-primary btn-lg" href="#">Book</a>
+                            <a class="btn btn-warning btn-lg" href="#">Edit</a>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<%- include("partials/footer") %>

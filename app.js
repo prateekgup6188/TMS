@@ -306,7 +306,7 @@ app.get("/admin/:id",function(req,res){
                 if(err){
                     console.log(err);
                 }else{
-                     console.log("After tenant/owner Details",data,data1)
+                     //console.log("After tenant/owner Details",data,data1)
                      res.render('admin',{admin_id:req.params.id,owners:data,tenants:data1});      
                 }
             });
@@ -327,8 +327,6 @@ app.get("/property/:id",function(req,res)
     res.render("property");
 });
 
-
-
 const ownerRoutes = require('./routes/ownerRoute');
 app.use('/owner',ownerRoutes);
 
@@ -337,6 +335,9 @@ app.use('/admin',adminRoutes);
 
 const propertyRoutes = require('./routes/propertyRoute');
 app.use('/property',propertyRoutes);
+
+const tenantRoutes = require('./routes/tenantRoute');
+app.use('/tenant',tenantRoutes);
 
 app.listen(3000, () => {
     console.log(`Example app listening at http://localhost:${3000}`)
