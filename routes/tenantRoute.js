@@ -42,7 +42,6 @@ router.get('/:id1/property/:id',[
         else
         {
             Owner.findById(data.author.id,function(err,owner){
-                console.log("Owner is: ",owner);
                 if(err){
                     console.log(err);
                 }else{
@@ -78,5 +77,30 @@ router.put('/:id/edit',function(req,res){
     });
 });
 
+router.get('/:id/pay',function(req,res){
+    Tenant.findById(req.params.id,function(err,data){
+        if(err)
+        {
+            console.log(err);
+        }
+        else{
+            console.log(data);
+            Property.findById(data.house.id,function(err,property){
+                if(err)
+                {
+                    console.log(err);
+                }
+                else{
+                    res.render("payment",{data:data,property:property});
+                }
+            });
+        }
+    });
+});
+
+router.post('/:id/pay',function(req,res){
+    req.flash("success","Payment Successful");
+    res.redirect("/tenant/"+req.params.id);
+});
 
 module.exports = router;
