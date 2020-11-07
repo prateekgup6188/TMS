@@ -101,7 +101,7 @@ app.post("/register", [
                     res.send(err);
                     return res.redirect("/register");
                 }else{
-                    req.flash("success", "User Successfully Registred!!");
+                    req.flash("success", "User Successfully Registered!!");
                     res.redirect("/tenant/" + user._id);
                 }
             });
@@ -113,7 +113,7 @@ app.post("/register", [
                     res.send(err);
                     return res.redirect("/register");
                 }else{
-                    req.flash("success", "User Successfully Registred!!");
+                    req.flash("success", "User Successfully Registered!!");
                     res.redirect("/owner/" + user._id);
                 }
             });
@@ -125,7 +125,7 @@ app.post("/register", [
                     res.send(err);
                     return res.redirect("/register");
                 }else{
-                    req.flash("success", "User Successfully Registred!!");
+                    req.flash("success", "User Successfully Registered!!");
                     res.redirect("/admin/" + user._id);
                 }
             });

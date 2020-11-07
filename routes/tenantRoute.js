@@ -56,7 +56,7 @@ router.get('/:id1/property/:id',[
 router.get('/:id/edit',function(req,res){
     Tenant.findById(req.params.id,function(err,data){
         console.log(data);
-        res.render("edittenant",{tenant_id:req.paramms.id,data:data});
+        res.render("edittenant",{tenant_id:req.params.id,data:data});
     })
 });
 
