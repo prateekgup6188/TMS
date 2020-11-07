@@ -1,7 +1,8 @@
 <%- include("partials/header") %>
     <div class="container">
         <div class="Jumbotron" style="margin:25px 0px 25px 0px; background-color:whitesmoke; padding: inherit;">
-            <p style="font-size:20px">Following are the property Available for renting</p>
+            <h1>Welcome To Tenant Management System</h1><br><br>
+            <p style="font-size:20px">Following are the properties that belong to this owner!! </p>
         </div>
         <div class="row">
             <%property.forEach(function(data){%>
@@ -9,7 +10,7 @@
                     <div class="thumbnail">
                         <img src="<%=data.image%>">
                         <div class="caption">
-                            <p><a href="/tenant/<%=tenant_id%>/property/<%=data._id%>" class="btn btn-primary" role="button">Show More...</a></p>
+                            <p><a href="/owner/<%=owner_id%>/property/<%=data._id%>" class="btn btn-primary" role="button">Show More...</a></p>
                         </div>
                     </div>
                 </div>

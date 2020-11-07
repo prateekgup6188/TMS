@@ -1,5 +1,6 @@
 var express = require('express');
-const property = require('../models/property');
+const Property = require('../models/property');
+const Owner = require('../models/owner');
 var router = express.Router();
 var owner = require('../services/owner');
 var { check,validationResult } = require('express-validator');
@@ -51,6 +52,50 @@ router.delete('/removeProperty/:id',function(req,res){
     });
 })
 
+router.get("/:id/property",function(req,res){
+    Property.find({},function(err,property){
+        if(err){
+            console.log(err);
+        }else{
+            console.log(property);
+            var prop=[];
+            property.forEach(function(data){
+                if((data.author.id).toString()==req.params.id)
+                {
+                    prop.push(data);
+                }
+            })
+            res.render('ViewOwnerProperties',{property:prop,owner_id:req.params.id})
+        }
+    });
+});
+
+
+router.get('/:id1/property/:id',[
+    check('id',"id must be valid").not().isEmpty()
+],(req, res) =>{
+    const errors=validationResult(req)
+    if(!errors.isEmpty()){
+        return res.redirect("back");  
+    }
+    Property.findById(req.params.id,function(err,data){
+        if(err)
+        {
+            console.log(err);
+        }
+        else
+        {
+            Owner.findById(data.author.id,function(err,owner){
+                console.log("Owner is: ",owner);
+                if(err){
+                    console.log(err);
+                }else{
+                    res.render("viewownerproperty",{property:data,owner:owner});
+                }
+            });
+        }
+    })
+});
 
 
 module.exports = router;

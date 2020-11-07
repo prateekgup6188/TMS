@@ -4,6 +4,7 @@ var Tenant=require('../models/tenant');
 
 var router = express.Router();
 var { check,validationResult } = require('express-validator');
+const Owner = require('../models/owner');
 
 router.get('/:id/property',[
     check('id',"id must be valid").not().isEmpty()
@@ -19,14 +20,15 @@ router.get('/:id/property',[
         }
         else
         {
-            res.render("ViewProperty",{property:data});
+            console.log(typeof(data));
+            res.render("ViewProperty",{tenant_id:req.params.id,property:data});
         }
     });
 });
 
 
 router.get('/:id1/property/:id',[
-    check('id1',"id1 must be valid").not().isEmpty()
+    check('id',"id must be valid").not().isEmpty()
 ],(req, res) =>{
     const errors=validationResult(req)
     if(!errors.isEmpty()){
@@ -39,16 +41,22 @@ router.get('/:id1/property/:id',[
         }
         else
         {
-            res.render("showproperty",{property:data});
+            Owner.findById(data.author.id,function(err,owner){
+                console.log("Owner is: ",owner);
+                if(err){
+                    console.log(err);
+                }else{
+                    res.render("showproperty",{property:data,owner:owner});
+                }
+            });
         }
     })
 });
 
-
 router.get('/:id/edit',function(req,res){
     Tenant.findById(req.params.id,function(err,data){
         console.log(data);
-        res.render("edittenant",{data:data});
+        res.render("edittenant",{tenant_id:req.paramms.id,data:data});
     })
 });
 
@@ -59,14 +67,16 @@ router.put('/:id/edit',function(req,res){
         if(err)
         {
             console.log(err);
-            res.redirect("/tenant/"+req.params.id);
+            res.redirect('back');
         }
         else
         {
             console.log(newdata);
+            req.flash("success","Profile Successfully Updated!!");
             res.redirect("/tenant/"+req.params.id);
         }
-    })
+    });
 });
+
 
 module.exports = router;

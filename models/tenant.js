@@ -4,8 +4,9 @@ var TenantSchema = new mongoose.Schema({
     password:String,
     phoneNo:String,
     username:String,
-    income:Number,
-    members:Number,
+    income:{type: String,default:"15000"},
+    role:String,
+    members:{type:String,default: "4"},
     house:{
             id:{
                 type:mongoose.Schema.Types.ObjectId,

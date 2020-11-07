@@ -3,6 +3,7 @@ var AdminSchema = new mongoose.Schema({
     email:String,
     password:String,
     phoneNo:String,
+    role:String,
     username:String,
     address: String
 });
