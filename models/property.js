@@ -1,10 +1,10 @@
 var mongoose = require("mongoose");
 var PropertySchema = new mongoose.Schema({
-    room:String,
+    room:Number,
     createdAt: { type:Date,default:Date.now },
     address:String,
     status:String,
-    rent:String,
+    rent:Number,
     image:String,
     username: String,
     author:{

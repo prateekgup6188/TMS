@@ -26,13 +26,17 @@
                 <tr>
                     <th>Username</th>
                     <th>Email ID </th>
-                    <th>Phone Number</th>                
+                    <th>Phone Number</th>  
+                    <th>Members</th>      
+                    <th>Income(per month)</th>            
                 </tr>
                 <% tenants.forEach(function(data1){%>
                     <tr>
                         <td><%=data1.username%></td>
                         <td><%=data1.email%></td>
                         <td><%=data1.phoneNo%></td>
+                        <td><%=data1.members%></td>
+                        <td><%=data1.income%></td>
                     </tr>
                 <%})%>
             </table>

@@ -38,20 +38,6 @@ router.post('/addProperty/:id',[
 })
 
 
-router.delete('/removeProperty/:id',function(req,res){
-    owner.removeProperty(req,function(err){
-        let message;
-        if(err){
-            message="Some error occured!";
-            res.send(err);
-        }
-        else{
-            message="Property Successfully Removed";
-            res.redirect('/owner/'+req.params.id);
-        }
-    });
-})
-
 router.get("/:id/property",function(req,res){
     Property.find({},function(err,property){
         if(err){
@@ -90,12 +76,50 @@ router.get('/:id1/property/:id',[
                 if(err){
                     console.log(err);
                 }else{
-                    res.render("viewownerproperty",{property:data,owner:owner});
+                    res.render("showOwnerProperty",{property:data,owner:owner});
                 }
             });
         }
     })
 });
 
+router.get("/:id/property/:id1/edit",function(req,res){
+    Property.findById(req.params.id1,function(err,prop){
+        if(err){
+            console.log(err);
+        }else{
+        res.render("edit",{prop:prop,owner_id:req.params.id});
+        }
+    })
+});
+
+router.put("/:id/property/:id1",function(req,res){
+    var data=req.body.property;
+    Property.findByIdAndUpdate(req.params.id1,data,function(err,prop){
+        if(err)
+        {
+            console.log(err);
+            res.redirect("back");
+        }
+        else
+        {
+            console.log("Edited Property is :",prop);
+            req.flash("success","Property Successfully Updated!!")
+            res.redirect("/owner/"+req.params.id+"/property/"+req.params.id1);
+        }
+    });
+});
+
+router.delete('/:id/property/:id1',function (req,res){
+    Property.findByIdAndRemove(req.params.id1,function(err){
+        if(err){
+            req.flash("error","Can't remove this property!");
+            console.log(err);
+        }else{
+            req.flash("success","Property Successfully Removed!!");
+            res.redirect('/owner/'+req.params.id+'/property');
+        }
+    });
+});
 
 module.exports = router;

@@ -1,13 +1,13 @@
-<%- include("./partials/footer") %>
+<%- include("./partials/header") %>
     <div class="container">
         <div class="row">
             <div class ="col-md-12 text-center">
                 <h1>Edit Property</h1>
             </div>
             <div style="width:30%; margin:30px auto;">
-                <form action="/property/<%= prop._id %>?_method=PUT" method="POST">
+                <form action="/owner/<%= owner_id %>/property/<%= prop._id %>?_method=PUT" method="POST">
                     <div class="form-group">
-                        <input class="form-control" type="number" name="property[rooms]" value="<%= prop.rooms %>">
+                        <input class="form-control" type="number" name="property[room]" value="<%= prop.room %>">
                     </div>
                     <div class="form-group">
                         <input class="form-control" type="text" name="property[status]" value="<%= prop.status %>">
@@ -25,7 +25,7 @@
                         <button class="btn btn-md btn-info btn-block">Submit</button>
                     </div>
                 </form>
-                <a class="btn btn-primary" href="/property">Back</a>
+                <a class="btn btn-primary" href="/owner/<%= owner_id %>/property/<%= prop._id %>">Back</a>
             </div>
         </div>
     </div>
