@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <div class="thumbnail">
+                <div class="thumbnail" style="border: solid;">
                     <img src="<%=property.image%>" style="width:100%">
                     <div class="caption" style="width:100%; font-size:25px;">
                         <ul class="list-group" style="text-align: center;">
@@ -14,7 +14,9 @@
                             <li class="list-group-item">Owner Email ID: <%=owner.email%></li>
                             <br>
                             <p><strong> Price is Non-Negotiable </strong></p>
-                            <a class="btn btn-primary btn-lg" href="#">Book</a>
+                            <form class="delete-form" action="/tenant/<%=tenant_id%>/property/<%= property._id%>/book?_method=PUT" method="POST">
+                                <input type="submit" class="btn btn-lg btn-danger" value="Book">
+                            </form>
                         </ul>
                     </div>
                 </div>

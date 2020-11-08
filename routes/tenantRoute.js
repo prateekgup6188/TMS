@@ -20,8 +20,14 @@ router.get('/:id/property',[
         }
         else
         {
-            console.log(typeof(data));
-            res.render("ViewProperty",{tenant_id:req.params.id,property:data});
+        var prop=[];
+            data.forEach(function (property){
+                if(property.status=="Vacant")
+                {
+                    prop.push(property);
+                }
+            })
+            res.render("ViewProperty",{tenant_id:req.params.id,property:prop});
         }
     });
 });
@@ -45,7 +51,7 @@ router.get('/:id1/property/:id',[
                 if(err){
                     console.log(err);
                 }else{
-                    res.render("showproperty",{property:data,owner:owner});
+                    res.render("showproperty",{property:data,owner:owner,tenant_id:req.params.id1});
                 }
             });
         }
@@ -78,16 +84,24 @@ router.put('/:id/edit',function(req,res){
 });
 
 router.put('/:id/property/:id1/book',function(req,res){
-    Property.findById(req.params.id1,function(err,property){
+    Tenant.findById(req.params.id,function(err,tenant){
         if(err){
             console.log(err);
         }else{
-            property.status="Full";
-            property.save();
-            req.flash('Property Successfully Booked!!');
-            res.redirect("back");
+            Property.findById(req.params.id1,function(err,property){
+                if(err){
+                    console.log(err);
+                }else{
+                    property.status="Full";
+                    tenant.house.id=property._id;
+                    tenant.save();
+                    property.save();
+                    req.flash('Property Successfully Booked!!');
+                    res.redirect("/tenant/"+req.params.id);
+                    }
+                });
         }
-    })
+    });
 });
 
 router.get('/:id/pay',function(req,res){
