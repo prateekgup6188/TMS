@@ -5,7 +5,7 @@ var router = express.Router();
 var owner = require('../services/owner');
 var { check,validationResult } = require('express-validator');
 
-
+//add property get route
 router.get('/addProperty/:id',[
     check('id',"id must be valid").not().isEmpty()
 ],(req, res) =>{
@@ -16,6 +16,7 @@ router.get('/addProperty/:id',[
     res.render("addProperty",{owner_id: req.params.id});
 })
 
+//add property post route
 router.post('/addProperty/:id',[
     check('id',"id must be valid").not().isEmpty()
 ],(req,res) => {
@@ -37,7 +38,7 @@ router.post('/addProperty/:id',[
    })
 })
 
-
+// show all owner properties
 router.get("/:id/property",function(req,res){
     Property.find({},function(err,property){
         if(err){
@@ -56,7 +57,7 @@ router.get("/:id/property",function(req,res){
     });
 });
 
-
+// show more about particular owner property
 router.get('/:id1/property/:id',[
     check('id',"id must be valid").not().isEmpty()
 ],(req, res) =>{
@@ -83,6 +84,7 @@ router.get('/:id1/property/:id',[
     })
 });
 
+//Edit Property Get Route
 router.get("/:id/property/:id1/edit",function(req,res){
     Property.findById(req.params.id1,function(err,prop){
         if(err){
@@ -93,6 +95,8 @@ router.get("/:id/property/:id1/edit",function(req,res){
     })
 });
 
+
+//Update Property PUT route
 router.put("/:id/property/:id1",function(req,res){
     var data=req.body.property;
     Property.findByIdAndUpdate(req.params.id1,data,function(err,prop){
@@ -110,6 +114,7 @@ router.put("/:id/property/:id1",function(req,res){
     });
 });
 
+//Remove Property
 router.delete('/:id/property/:id1',function (req,res){
     Property.findByIdAndRemove(req.params.id1,function(err){
         if(err){

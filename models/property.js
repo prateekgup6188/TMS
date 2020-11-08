@@ -3,7 +3,7 @@ var PropertySchema = new mongoose.Schema({
     room:Number,
     createdAt: { type:Date,default:Date.now },
     address:String,
-    status:String,
+    status:{ type:String,default:"Vacant" },
     rent:Number,
     image:String,
     username: String,

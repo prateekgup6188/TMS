@@ -77,6 +77,19 @@ router.put('/:id/edit',function(req,res){
     });
 });
 
+router.put('/:id/property/:id1/book',function(req,res){
+    Property.findById(req.params.id1,function(err,property){
+        if(err){
+            console.log(err);
+        }else{
+            property.status="Full";
+            property.save();
+            req.flash('Property Successfully Booked!!');
+            res.redirect("back");
+        }
+    })
+});
+
 router.get('/:id/pay',function(req,res){
     Tenant.findById(req.params.id,function(err,data){
         if(err)

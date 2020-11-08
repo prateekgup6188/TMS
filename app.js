@@ -297,9 +297,6 @@ app.use('/owner', ownerRoutes);
 const adminRoutes = require('./routes/adminRoute');
 app.use('/admin', adminRoutes);
 
-const propertyRoutes = require('./routes/propertyRoute');
-app.use('/property', propertyRoutes);
-
 const tenantRoutes = require('./routes/tenantRoute');
 app.use('/tenant', tenantRoutes);
 
