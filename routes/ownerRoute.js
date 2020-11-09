@@ -84,6 +84,38 @@ router.get('/:id1/property/:id',[
     })
 });
 
+//Edit Owner Profile
+router.get("/:id/edit",[
+    check('id',"id must be valid").not().isEmpty()
+],(req,res) => {
+    const errors=validationResult(req)
+    if(!errors.isEmpty()){
+        return res.render("login");  
+    }
+    Owner.findById(req.params.id,function(err,data){
+        if(err)
+        {
+            console.log(err);
+        }
+        else{
+            res.render("editowner",{data:data});
+        }
+    })
+});
+
+router.put("/:id/edit",function(req,res){
+    var data=req.body.owner;
+    Owner.findByIdAndUpdate(req.params.id,data,function(err,new_owner){
+        if(err)
+        {
+            console.log(err);
+        }
+        else{
+            req.flash("success","Profile Successfully Updated!!")
+            res.redirect("/owner/"+req.params.id);
+        }
+    })
+})
 //Edit Property Get Route
 router.get("/:id/property/:id1/edit",function(req,res){
     Property.findById(req.params.id1,function(err,prop){

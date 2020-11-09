@@ -1,5 +1,65 @@
-<%- include("partials/header") %>   
-    <h1>This is Owner page</h1>
-    <a class="btn btn-primary btn-lg" href="/owner/addProperty/<%=owner_id%>">Add Property</a>
-    <a class="btn btn-primary btn-lg" href="/owner/<%=owner_id%>/property">View My Properties</a>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tenant Management System</title>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <style>
+            #page{
+                background-image: url(https://images.unsplash.com/photo-1591014225791-9e30695a0aa3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=600);
+                background-size:cover;
+                width: 100%;
+                height: 100%;
+                position: relative;
+                margin: 0;
+                padding: 0;
+                top: 0;
+                z-index: 0;
+                left: 0;
+                background-repeat: no-repeat;
+                background-position: 50% 50%;
+            }
+        </style>
+    </head>
+    <body id="page">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" style="font-weight: bolder;font-family:sans-serif;font-size: x-large;" href="/">Tenant Management System</a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                            <li><a style="font-size: larger;color: rebeccapurple;" href="/login">Login</a></li>
+                            <li><a style="font-size: larger;color: rebeccapurple;" href="/register">Sign Up</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container"> 
+            <% if(error && error.length>0){ %>
+                <div class="container-fluid">
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <%= error %>
+                    </div>
+                </div>
+            <% } %>
+            <% if(success && success.length>0){ %>
+                <div class="container-fluid">
+                    <div class="alert alert-success alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <%= success %>
+                    </div>
+                </div>
+            <% } %>  
+        </div>
+        <div  class="container">
+            <div class="list-group" style="width:40% ;margin:150px 0px 0px 400px;">
+                <a class="text-center btn-lg list-group-item list-group-item-warning" href="/owner/addProperty/<%=owner_id%>">Add Property</a><br>
+                <a class="text-center btn-lg list-group-item list-group-item-warning" href="/owner/<%=owner_id%>/property">View My Properties</a><br>
+                <a class="text-center btn-lg list-group-item list-group-item-warning" href="/owner/<%=owner_id%>/edit">Edit Profile</a>
+            </div>
+        </div>
 <%- include("./partials/footer") %>
