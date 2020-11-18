@@ -1,4 +1,25 @@
 <%- include("partials/header") %>
+    <% if(property){ %>
+        <div class="container">
+            <h2 style="text-align: center;"><strong>This is your current house</strong></h2>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="thumbnail" style="border: solid;">
+                        <img src="<%=property.image%>" style="width:100%">
+                        <div class="caption" style="width:100%; font-size:25px;">
+                            <ul class="list-group" style="text-align: center;">
+                                <li class="list-group-item">Total Number of Rooms Present: <%=property.room%></li>
+                                <li class="list-group-item">Address of the House: <%=property.address%></li>
+                                <li class="list-group-item">Rent per month for the House: <%=property.rent%></li>
+                                <br>
+                                <a href="#" class="btn btn-danger" role="button">Leave</a>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <% }else{ %>
     <div class="container">
         <div class="row text-center">
             <div class="col-md-6">
@@ -25,6 +46,7 @@
             </div>
         </div>
     </div>
+    <% } %>
     <div class="container" >
         <ul class="list-group" style="margin:20px 200px 20px 200px; font-size:20px; text-align: center;">
             <li class="list-group-item"><span class="glyphicon glyphicon-home" style="font-size: 25px;" aria-hidden="true"></span> View Properties <a class="btn btn-primary" href="/tenant/<%=tenant_id%>/property">Go</a></li>

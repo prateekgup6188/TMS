@@ -96,7 +96,7 @@ router.put('/:id/property/:id1/book',function(req,res){
                     tenant.house.id=property._id;
                     tenant.save();
                     property.save();
-                    req.flash('Property Successfully Booked!!');
+                    req.flash("success",'Property Successfully Booked!!');
                     res.redirect("/tenant/"+req.params.id);
                     }
                 });

@@ -175,10 +175,26 @@ app.post("/login/tenant", [
 
 //Tenant Page
 app.get('/tenant/:id', function (req, res) {
-    res.render("tenant", {
-        tenant_id: req.params.id
+    Tenant.findById(req.params.id,function(err,tenant){
+        if(err){
+            console.log(err);
+        }else{
+            if(tenant.house.id){
+            const prop_id=tenant.house.id;
+            Property.findById(prop_id,function(err,property){
+                if(err){
+                    console.log(err);
+                }else{
+                    console.log("Property ID is: ",property.id);
+                    res.render("tenant",{property:property,tenant_id:req.params.id});
+                }
+            })
+        }else{
+            res.render("tenant",{property:null,tenant_id:req.params.id});
+        }
+        }
     });
-})
+});
 
 
 //Owner Login Page
@@ -187,7 +203,6 @@ app.get('/login/owner', function (req, res) {
 });
 
 //handling Owner login logic
-
 app.post("/login/owner", [
     check('username', "Invalid Username").isLength({
         min: 3
