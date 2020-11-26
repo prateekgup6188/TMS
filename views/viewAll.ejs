@@ -1,0 +1,19 @@
+<%- include("partials/header") %>
+    <div class="container">
+        <div class="Jumbotron" style="margin:25px 0px 25px 0px; background-color:whitesmoke; padding: inherit;">
+            <p style="font-size:30px"><strong>All available properties are shown here!!</strong></p>
+        </div>
+        <div class="row">
+            <%prop.forEach(function(data){%>
+                <div class="col-md-4">
+                    <div class="thumbnail">
+                        <img src="<%=data.image%>" style="height: 20rem;width:30rem">
+                        <div class="caption">
+                            <p style="text-align: center;"><a href="/admin/<%=admin_id%>/viewall/<%=data._id%>" class="btn btn-primary" role="button">Show More...</a></p>
+                        </div>
+                    </div>
+                </div>
+            <%})%>
+        </div>
+    </div>
+<%- include("partials/footer") %>

@@ -78,7 +78,7 @@ app.post("/register", [
         if (!value.match(/^(?:(?:\+|0{0,2})91(\s*[\-]\s*)?|[0]?)?[6789]\d{9}$/)) return false;
         return true;
     }),
-    check('role', "Role must be Admin/Tenant/Manager/Owner").isIn(['Admin', 'Tenant', 'Manager', 'Owner'])
+    check('role', "Role must be Admin/Tenant/Owner").isIn(['Admin', 'Tenant', 'Manager', 'Owner'])
 ], function (req, res) {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
@@ -294,6 +294,31 @@ app.get("/admin/:id", function (req, res) {
     });
 });
 
+app.get('/admin/:id/viewall',function(req,res){
+    Property.find({},function(err,prop){
+        if(err){
+            console.log(err);
+        }else{
+            res.render('viewAll',{prop:prop,admin_id:req.params.id});
+        }
+    });
+});
+
+app.get('/admin/:id/viewall/:id1',function(req,res){
+    Property.findById(req.params.id1,function(err,prop){
+        if(err){
+            console.log(err);
+        }else{
+            Owner.findById(prop.author.id,function(err,owner){
+                if(err){
+                    console.log(err);
+                }else{
+                    res.render('showAll',{property:prop,owner:owner});
+                }
+        });
+        }
+    });
+});
 
 // logout route
 app.get("/logout", function (req, res) {
@@ -313,6 +338,7 @@ const adminRoutes = require('./routes/adminRoute');
 app.use('/admin', adminRoutes);
 
 const tenantRoutes = require('./routes/tenantRoute');
+const router = require("./routes/tenantRoute");
 app.use('/tenant', tenantRoutes);
 
 app.listen(3000, () => {

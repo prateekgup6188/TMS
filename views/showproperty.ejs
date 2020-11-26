@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="thumbnail" style="border: solid;">
-                    <img src="<%=property.image%>" style="width:100%">
+                    <img src="<%=property.image%>" style="width:100%; height:fit-content">
                     <div class="caption" style="width:100%; font-size:25px;">
                         <ul class="list-group" style="text-align: center;">
                             <li class="list-group-item">Total Number of Rooms Present: <%=property.room%></li>
@@ -14,9 +14,11 @@
                             <li class="list-group-item">Owner Email ID: <%=owner.email%></li>
                             <br>
                             <p><strong> Price is Non-Negotiable </strong></p>
-                            <form class="delete-form" action="/tenant/<%=tenant_id%>/property/<%= property._id%>/book?_method=PUT" method="POST">
+                            <% if(tenant.house.id==null){ %>
+                            <form class="delete-form" action="/tenant/<%=tenant._id%>/property/<%= property._id%>/book?_method=PUT" method="POST">
                                 <input type="submit" class="btn btn-lg btn-danger" value="Book">
                             </form>
+                            <% } %>
                         </ul>
                     </div>
                 </div>

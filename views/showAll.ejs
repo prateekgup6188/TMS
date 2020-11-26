@@ -9,16 +9,10 @@
                             <li class="list-group-item">Total Number of Rooms Present: <%=property.room%></li>
                             <li class="list-group-item">Address of the House: <%=property.address%></li>
                             <li class="list-group-item">Rent per month for the House: <%=property.rent%></li>
+                            <li class="list-group-item">Status of the House: <%=property.status%></li>
                             <li class="list-group-item">Owner of the House: <%= owner.username %></li>
                             <li class="list-group-item">Owner Contact Details: <%=owner.phoneNo%></li>
                             <li class="list-group-item">Owner Email ID: <%=owner.email%></li>
-                            <br>
-                            <p><strong> Price is Non-Negotiable </strong></p>
-                                <a class="btn btn-primary btn-lg" href="/owner/<%=owner._id%>/property/<%= property._id %>/edit">Edit</a>
-                                <hr>
-                                <form class="delete-form" action="/owner/<%=owner._id%>/property/<%= property._id %>?_method=DELETE" method="POST">
-                                    <input type="submit" class="btn btn-lg btn-danger" value="Delete">
-                                </form>
                         </ul>
                     </div>
                 </div>

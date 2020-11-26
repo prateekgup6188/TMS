@@ -36,26 +36,32 @@ router.get('/:id/property',[
 router.get('/:id1/property/:id',[
     check('id',"id must be valid").not().isEmpty()
 ],(req, res) =>{
-    const errors=validationResult(req)
-    if(!errors.isEmpty()){
-        return res.render("login");  
-    }
-    Property.findById(req.params.id,function(err,data){
-        if(err)
-        {
-            console.log(err);
+        const errors=validationResult(req)
+        if(!errors.isEmpty()){
+            return res.render("login");  
         }
-        else
-        {
-            Owner.findById(data.author.id,function(err,owner){
-                if(err){
-                    console.log(err);
-                }else{
-                    res.render("showproperty",{property:data,owner:owner,tenant_id:req.params.id1});
-                }
-            });
-        }
-    })
+        Tenant.findById(req.params.id1,function(err,tenant){
+            if(err){
+                console.log(err);
+            }else{
+                Property.findById(req.params.id,function(err,data){
+                    if(err)
+                    {
+                        console.log(err);
+                    }
+                    else
+                    {
+                        Owner.findById(data.author.id,function(err,owner){
+                            if(err){
+                                console.log(err);
+                            }else{
+                                res.render("showproperty",{property:data,owner:owner,tenant:tenant});
+                            }
+                        });
+                    }
+                })
+            }
+    });
 });
 
 router.get('/:id/edit',function(req,res){
@@ -104,6 +110,27 @@ router.put('/:id/property/:id1/book',function(req,res){
     });
 });
 
+router.put('/:id/leave/:id1',function(req,res){
+    Property.findById(req.params.id1,function(err,prop){
+        if(err){
+            console.log(err);
+        }else{
+            Tenant.findById(req.params.id,function(err,tenant){
+                if(err){
+                    console.log(err);
+                }else{            
+                    prop.status="Vacant";
+                    prop.save();
+                    tenant.house.id=null;
+                    tenant.save();
+                    req.flash("success","Property successfully left!!");
+                    res.redirect("back");
+                }
+            });
+        }
+    });
+});
+
 router.get('/:id/pay',function(req,res){
     Tenant.findById(req.params.id,function(err,data){
         if(err)
@@ -112,6 +139,8 @@ router.get('/:id/pay',function(req,res){
         }
         else{
             console.log(data);
+            if(data.house.id!=null)
+            {
             Property.findById(data.house.id,function(err,property){
                 if(err)
                 {
@@ -121,6 +150,10 @@ router.get('/:id/pay',function(req,res){
                     res.render("payment",{data:data,property:property});
                 }
             });
+            }else{
+                req.flash("error","No property booked yet!");
+                res.redirect("back");
+            }
         }
     });
 });
