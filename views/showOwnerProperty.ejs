@@ -13,12 +13,13 @@
                             <li class="list-group-item">Owner Contact Details: <%=owner.phoneNo%></li>
                             <li class="list-group-item">Owner Email ID: <%=owner.email%></li>
                             <br>
-                            <p><strong> Price is Non-Negotiable </strong></p>
                                 <a class="btn btn-primary btn-lg" href="/owner/<%=owner._id%>/property/<%= property._id %>/edit">Edit</a>
                                 <hr>
+                                <% if(property.status=="Vacant"){ %>
                                 <form class="delete-form" action="/owner/<%=owner._id%>/property/<%= property._id %>?_method=DELETE" method="POST">
                                     <input type="submit" class="btn btn-lg btn-danger" value="Delete">
                                 </form>
+                                <% } %>
                         </ul>
                     </div>
                 </div>

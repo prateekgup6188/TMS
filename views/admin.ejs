@@ -3,16 +3,17 @@
         <div class="jumbotron">
             <h1 style="font-size:50px ;">All The Owner and Tenant details are given below </h1><br>
         </div>
+        <br>
         <div style="width:100%; margin:0 auto;">
-            <h1 class="text-center">Owner Details</h1>
-            <table class="table table-bordered"> 
-                <tr>
+            <h1 class="text-center"><strong><u>Owner Details</u></strong></h1>
+            <table class="table table-striped" style="font-size: 20px"> 
+                <tr class='active'>
                     <th>Username</th>
                     <th>Email ID </th>
                     <th>Phone Number</th>                
                 </tr>
                 <% owners.forEach(function(data){%>
-                    <tr>
+                    <tr class='active'>
                         <td><%=data.username%></td>
                         <td><%=data.email%></td>
                         <td><%=data.phoneNo%></td>
@@ -20,10 +21,11 @@
                 <%})%>
             </table>
         </div>
+        <br>
         <div style="width:100%; margin:0 auto;">
-            <h1 class="text-center">Tenant Details</h1>
-            <table class="table table-bordered"> 
-                <tr>
+            <h1 class="text-center"><strong><u>Tenant Details</u></strong></h1>
+            <table class="table table-striped" style="font-size: 20px;"> 
+                <tr class='active'>
                     <th>Username</th>
                     <th>Email ID </th>
                     <th>Phone Number</th>  
@@ -31,7 +33,7 @@
                     <th>Income(per month)</th>            
                 </tr>
                 <% tenants.forEach(function(data1){%>
-                    <tr>
+                    <tr class='active'>
                         <td><%=data1.username%></td>
                         <td><%=data1.email%></td>
                         <td><%=data1.phoneNo%></td>
@@ -42,5 +44,5 @@
             </table>
         </div>
     </div>
-    <a class="btn btn-primary" style="margin-left: 75rem;" href="/admin/<%=admin_id%>/viewall">Show all properties</a>
+    <a class="btn btn-primary btn-lg" style="margin-left: 75rem;" href="/admin/<%=admin_id%>/viewall">Show all properties</a>
 <%- include("./partials/footer") %>

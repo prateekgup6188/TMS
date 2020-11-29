@@ -14,8 +14,9 @@ var {
 var Validator = require('validatorjs');
 var mongoose = require("mongoose");
 
+const dbUrl=process.env.DB_URL||"mongodb://localhost/TMS";
 
-mongoose.connect("mongodb://localhost/TMS", {
+mongoose.connect(dbUrl, {
         useUnifiedTopology: true,
         useNewUrlParser: true,
         useCreateIndex: true,

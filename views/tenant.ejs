@@ -21,8 +21,9 @@
                 </div>
             </div>
         </div>
-    <% }else{ %>
-    <div class="container">
+    <% }
+    else{ %>
+    <div class="container" style="margin-left:57rem;">
         <div class="row text-center">
             <div class="col-md-6">
                 <div class="thumbnail">
@@ -35,21 +36,10 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="thumbnail">
-                    <img src="https://images.unsplash.com/photo-1516501312919-d0cb0b7b60b8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60">
-                    <div class="caption">
-                        <p>Details of the house</p>
-                        <p><a href="#" class="btn btn-primary" role="button">Book</a>
-                            <a href="#" class="btn btn-danger" role="button">Leave</a>
-                        </p>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
     <% } %>
-    <div class="container" >
+    <div class="container">
         <ul class="list-group" style="margin:20px 200px 20px 200px; font-size:20px; text-align: center;">
             <li class="list-group-item"><span class="glyphicon glyphicon-home" style="font-size: 25px;" aria-hidden="true"></span> View Properties <a class="btn btn-primary" href="/tenant/<%=tenant_id%>/property">Go</a></li>
             <li class="list-group-item"><span class="glyphicon glyphicon-euro" style="font-size: 25px;" aria-hidden="true"></span> Pay Rent <a class="btn btn-primary " href="/tenant/<%=tenant_id%>/pay">Go</a></li>
