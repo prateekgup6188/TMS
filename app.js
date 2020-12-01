@@ -6,6 +6,7 @@ var Tenant = require('./models/tenant');
 var Owner = require('./models/owner');
 var Admin = require('./models/admin');
 var Property = require('./models/property');
+var Notification = require('./models/notifications');
 var flash = require('connect-flash');
 var {
     check,
@@ -79,7 +80,7 @@ app.post("/register", [
         if (!value.match(/^(?:(?:\+|0{0,2})91(\s*[\-]\s*)?|[0]?)?[6789]\d{9}$/)) return false;
         return true;
     }),
-    check('role', "Role must be Admin/Tenant/Owner").isIn(['Admin', 'Tenant', 'Manager', 'Owner'])
+    check('role', "Role must be Admin/Tenant/Owner").isIn(['Admin', 'Tenant', 'Owner'])
 ], function (req, res) {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {

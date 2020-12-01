@@ -159,4 +159,15 @@ router.delete('/:id/property/:id1',function (req,res){
     });
 });
 
+//View Notifications
+router.get('/:id/notification',function(req,res){
+    Owner.findById(req.params.id).populate("notifications").exec(function(err,owner){
+        if(err){
+            console.log(err);
+        }else{
+            res.render("viewNotification",{owner:owner});
+        }
+    })
+});
+
 module.exports = router;

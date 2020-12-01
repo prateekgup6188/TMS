@@ -5,6 +5,12 @@ var OwnerSchema = new mongoose.Schema({
     password:String,
     phoneNo:String,
     username:String,
-    address: String
+    address: String,
+    notifications:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"Notification"
+        }
+    ]
 });
 module.exports = mongoose.model("Owner",OwnerSchema);

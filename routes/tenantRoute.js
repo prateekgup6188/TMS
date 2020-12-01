@@ -1,10 +1,15 @@
 var express = require('express');
 const Property = require('../models/property');
 var Tenant=require('../models/tenant');
+var {
+    check,
+    validationResult
+} = require('express-validator');
 
 var router = express.Router();
 var { check,validationResult } = require('express-validator');
 const Owner = require('../models/owner');
+const Notifications = require('../models/notifications');
 
 router.get('/:id/property',[
     check('id',"id must be valid").not().isEmpty()
@@ -158,9 +163,65 @@ router.get('/:id/pay',function(req,res){
     });
 });
 
-router.post('/:id/pay',function(req,res){
-    req.flash("success","Payment Successful");
-    res.redirect("/tenant/"+req.params.id);
+router.post('/:id/pay',[
+   check('name',"Invalid Card Holder Name").isLength({min:3,max:30}).matches(/^[A-Za-z\s]+$/),
+   check('card_number',"Invalid Card Number").isLength({min:16,max:16}),
+   check('cvv','Invalid CVV').isLength({min:3,max:3})
+],function(req,res){
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        const alert = errors.array();
+        Tenant.findById(req.params.id,function(err,tenant){
+            if(err){
+                console.log(err);
+            }else{
+                Property.findById(tenant.house.id,function(err,property){
+                    if(err){
+                        console.log(err);
+                    }else
+                    {
+                        return res.render("payment", {
+                            data:tenant,property:property,alert
+                        });
+                    }
+                });
+            }
+        })
+    } else {
+        Tenant.findById(req.params.id,function(err,tenant){
+            if(err){
+                console.log(err);
+            }else{
+                Property.findById(tenant.house.id,function(err1,property){
+                    if(err1){
+                        console.log(err1);
+                    }else{
+                        Owner.findById(property.author.id,function(err2,owner){
+                            if(err2){
+                                console.log(err2);
+                            }else{
+                                var mssg="Rent of Rs "+property.rent+" received from "+tenant.username;
+                                var obj = {
+                                    text : mssg.toString(),
+                                }
+                                Notifications.create(obj,function(err3,notification){
+                                    if(err3){
+                                        console.log(err3);
+                                    }else{
+                                        console.log("Message is "+notification);
+                                        owner.notifications.push(notification);
+                                        owner.save();                                   
+                                        req.flash("success","Payment Successful");
+                                        res.redirect("/tenant/"+req.params.id);
+                                    }
+                                })
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
 });
 
 module.exports = router;

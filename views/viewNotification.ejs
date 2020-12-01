@@ -1,0 +1,14 @@
+<%- include("./partials/header") %>
+<div class="container">
+    <br>
+    <br>
+    <div class="row" style="text-align: center;">
+        <%owner.notifications.forEach(function(data){%>
+            <div style="border:solid 3px;background-color:rgb(212, 204, 204)">
+                <h1><%= data.text %></h1>
+            </div>
+            <br>
+        <% }) %>
+    </div>
+</div>
+<%- include("./partials/footer") %>
